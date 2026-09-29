@@ -1,4 +1,13 @@
 const container = document.querySelector("#container");
+const button = document.querySelector("#new-grid");
+
+// Returns a random color like "rgb(120, 45, 200)"
+function getRandomColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return "rgb(" + r + ", " + g + ", " + b + ")";
+}
 
 function createGrid(size) {
   const totalSquares = size * size;
@@ -7,43 +16,45 @@ function createGrid(size) {
     const square = document.createElement("div");
     square.classList.add("square");
 
-    // Each square takes up 1/size of the container's width and height
     square.style.width = 100 / size + "%";
     square.style.height = 100 / size + "%";
 
+    // Each square remembers how many times it has been touched
+    let hits = 0;
+
     square.addEventListener("mouseenter", function () {
-      square.classList.add("colored");
+      // First touch: give the square a random color
+      if (hits === 0) {
+        square.style.backgroundColor = getRandomColor();
+      }
+
+      // Each touch makes it 10% more solid, up to 10 touches
+      if (hits < 10) {
+        hits++;
+        square.style.opacity = hits / 10;
+      }
     });
 
-    
     container.appendChild(square);
   }
 }
 
 createGrid(16);
 
-
-const button = document.querySelector("#new-grid");
-
 button.addEventListener("click", function () {
   const input = prompt("How many squares per side? (1 to 100)");
 
-  // If the user clicked Cancel, stop here
   if (input === null) {
     return;
   }
 
   const size = Number(input);
 
-  // Check that it's a whole number between 1 and 100
   if (!Number.isInteger(size) || size < 1 || size > 100) {
     alert("Please enter a whole number from 1 to 100.");
     return;
   }
 
-  // Remove the old grid
   container.innerHTML = "";
-
-  // Create the new grid
   createGrid(size);
 });
