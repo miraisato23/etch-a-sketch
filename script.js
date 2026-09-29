@@ -11,6 +11,11 @@ function createGrid(size) {
     square.style.width = 100 / size + "%";
     square.style.height = 100 / size + "%";
 
+    square.addEventListener("mouseenter", function () {
+      square.classList.add("colored");
+    });
+
+    
     container.appendChild(square);
   }
 }

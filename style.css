@@ -18,3 +18,7 @@ body {
 .square {
   border: 1px solid #ddd;
 }
+
+.colored {
+  background-color: black;
+}
